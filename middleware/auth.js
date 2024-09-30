@@ -25,16 +25,15 @@ const auth = asyncHandler(async (req, res, next) => {
     }
 
     req.user = user
-    console.log(45);
-    console.log(user);
-
+    // console.log(45);
+    // console.log(user);
     next()
 })
 
 const isAdmin = asyncHandler(async (req, res, next) => {
 
     const user = await userModel.findById(req.user._id);
-    console.log(user.role);
+    // console.log(user.role);
 
     if (user.role !== "admin") {
         return next(createError(403, "Access denied, Admin only."));
