@@ -7,7 +7,6 @@ const userRouter = express.Router();
 
 userRouter.route("/register").post(validateRegisterUser,registerUser)
 userRouter.route("/login").post(validateLoginUser,loginUser)
-
 userRouter.route("/logout").delete(auth,logoutUser)
 
 

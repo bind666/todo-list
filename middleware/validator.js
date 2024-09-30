@@ -3,10 +3,13 @@ import Joi from "joi";
 
 
 const validateRegisterUser = (req, res, next) => {
+    console.log(req.bod);
+    
     const validationSchema = Joi.object({
         username: Joi.string().required().trim().min(3).disallow(""),
         password: Joi.string().required().min(3).max(16),
-        email: Joi.string().required().email().disallow("")
+        email: Joi.string().required().email().disallow(""),
+        role: Joi.string().required().default("user").disallow("")
     })
 
     const { error, value } = validationSchema.validate(req.body);

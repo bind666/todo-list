@@ -45,6 +45,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
         .cookie("accessToken", accessToken, { httpOnly: true, expiresIn: "8h" })
         .json(new ApiResponse({ user, refreshToken, accessToken }, "user registered sucessfully"))
 })
+
 const logoutUser = asyncHandler(async (req, res, next) => {
     const { _id } = req.user
     await userModel.findByIdAndUpdate(_id, {

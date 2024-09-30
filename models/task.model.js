@@ -6,6 +6,11 @@ const taskSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "userModel"
     },
+    assignedUser: {
+        type: Schema.Types.ObjectId,
+        ref: "userModel",
+        default: null
+    },
     title: {
         type: String,
         required: true,

@@ -40,7 +40,7 @@ const fetchTask = asyncHandler(async (req, res, next) => {
     const { id } = req.user
     const skip = (page - 1) * limit;
 
-    const tasks = await taskModel.find({ creatorID: id }).skip(skip).limit(limit).sort(sort).
+    const tasks = await taskModel.find({ $or: [{ creatorID: id }, { assignedUser: id }] }).skip(skip).limit(limit).sort(sort).
         select("-createdAt -__v -updatedAt -creatorID ")
 
     // console.log(tasks);
@@ -84,7 +84,26 @@ const updateTask = asyncHandler(async (req, res, next) => {
     res.status(200).json(new ApiResponse(task, "task updated."))
 })
 
+const assignTask = asyncHandler(async (req, res, next) => {
+    const { taskId, userId } = req.body;
+
+    const task = await taskModel.findById(taskId);
+    if (!task) {
+        return next(createError(401, "Task not found."))
+    }
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+        return next(createError(401, "User not found."))
+    }
+
+    task.assignedUser = userId;
+    await task.save();
+
+    res.status(200).json({ message: "Task assigned successfully", task });
+})
 
 
 
-export { createTask, deleteTask, updateTask, fetchTask }
+
+export { createTask, deleteTask, updateTask, fetchTask, assignTask }
